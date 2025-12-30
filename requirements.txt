@@ -24,3 +24,4 @@ sqlalchemy-cockroachdb==2.0.3
 typing_extensions==4.15.0
 tzdata==2025.3
 Werkzeug==3.1.4
+gunicorn
