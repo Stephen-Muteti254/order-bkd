@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Order
+from app.models import db, Order, Class, Genre, Client, Product
 from app.services import create_order
 
 from flask import Blueprint, request, jsonify
@@ -79,14 +79,16 @@ def get_orders():
 
     # ---- Search filtering ----
     if search:
-        query = query.join(Order.client, isouter=True).join(Order.product, isouter=True).filter(
+        query = query.filter(
             or_(
                 Order.order_class.has(Class.name.ilike(f"%{search}%")),
                 Order.order_genre.has(Genre.name.ilike(f"%{search}%")),
                 Order.client.has(Client.clientName.ilike(f"%{search}%")),
                 Order.product.has(Product.name.ilike(f"%{search}%")),
+                Order.product.has(Client.institution.ilike(f"%{search}%")),
             )
         )
+
 
     # ---- Sorting ----
     if sort.startswith("-"):

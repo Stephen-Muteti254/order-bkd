@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.models import db, Client
+from sqlalchemy import or_, desc
 
 clients_bp = Blueprint("clients", __name__, url_prefix="/api/v1/clients")
 
@@ -26,7 +27,12 @@ def get_clients():
     query = Client.query
 
     if search:
-        query = query.filter(Client.clientName.ilike(f"%{search}%"))
+        query = query.filter(
+            or_(
+                Client.clientName.ilike(f"%{search}%"),
+                Client.institution.ilike(f"%{search}%"),
+            )
+        )
 
     from datetime import datetime
     if start_date_str:

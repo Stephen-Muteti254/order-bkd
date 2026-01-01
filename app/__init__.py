@@ -6,6 +6,7 @@ from app.routes.products import products_bp
 from app.routes.orders import orders_bp
 from app.routes.invoices import invoices_bp
 from app.routes.classes_genres import meta_bp
+from app.routes.auth import users_bp
 
 def create_app():
     app = Flask(__name__)
@@ -18,6 +19,7 @@ def create_app():
     app.register_blueprint(orders_bp)
     app.register_blueprint(invoices_bp)
     app.register_blueprint(meta_bp)
+    app.register_blueprint(users_bp)
     
     # with app.app_context():
     #     db.create_all()

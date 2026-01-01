@@ -14,12 +14,13 @@ def create_order(data):
     order = Order(
         clientId=data['clientId'],
         productId=data['productId'],
-        classId=data.get('orderClass') or None,  # empty string -> None
-        genreId=data.get('genre') or None,       # empty string -> None
+        classId=data.get('orderClass') or None,
+        genreId=data.get('genre') or None,
         week=data.get('week'),
         pagesOrSlides=data['pagesOrSlides'],
         totalCost=total_cost,
-        description=data.get('description')
+        description=data.get('description'),
+        createdAt = datetime.fromisoformat(data["orderDate"])
     )
 
     db.session.add(order)
