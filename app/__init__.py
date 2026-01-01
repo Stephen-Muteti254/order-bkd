@@ -19,7 +19,7 @@ def create_app():
     app.register_blueprint(invoices_bp)
     app.register_blueprint(meta_bp)
     
-    with app.app_context():
-        db.create_all()
+    # with app.app_context():
+    #     db.create_all()
     
     return app
