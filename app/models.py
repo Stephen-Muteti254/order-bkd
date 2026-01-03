@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 db = SQLAlchemy()
@@ -42,8 +42,16 @@ class Order(db.Model):
     week = db.Column(db.String, nullable=True)
     pagesOrSlides = db.Column(db.Integer, nullable=False)
     totalCost = db.Column(db.Float, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    createdAt = db.Column(
+        db.DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc)
+    )
+
+    updatedAt = db.Column(
+        db.DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc)
+    )
 
     order_class = db.relationship("Class", backref="orders")
     order_genre = db.relationship("Genre", backref="orders")

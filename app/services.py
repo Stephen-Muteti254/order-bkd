@@ -4,29 +4,47 @@ from datetime import datetime
 def calculate_total_cost(product_price, quantity):
     return product_price * quantity
 
+from datetime import datetime, timezone, timedelta
+
+EAT = timezone(timedelta(hours=3))
+
 def create_order(data):
     product = Product.query.get(data['productId'])
     if not product:
         raise ValueError("Product not found")
-    
-    total_cost = calculate_total_cost(product.pricePerUnit, data['pagesOrSlides'])
-    
+
+    total_cost = calculate_total_cost(
+        product.pricePerUnit,
+        data['pagesOrSlides']
+    )
+
+    created_at = None
+    if data.get("orderDate"):
+        # Parse EAT datetime
+        eat_dt = datetime.fromisoformat(data["orderDate"])
+
+        # If frontend didn't send tzinfo, assume EAT
+        if eat_dt.tzinfo is None:
+            eat_dt = eat_dt.replace(tzinfo=EAT)
+
+        # Convert to UTC for storage
+        created_at = eat_dt.astimezone(timezone.utc)
+
     order = Order(
         clientId=data['clientId'],
         productId=data['productId'],
-        classId=data.get('orderClass') or None,
-        genreId=data.get('genre') or None,
+        classId=data.get('orderClass'),
+        genreId=data.get('genre'),
         week=data.get('week'),
         pagesOrSlides=data['pagesOrSlides'],
         totalCost=total_cost,
         description=data.get('description'),
-        createdAt = datetime.fromisoformat(data["orderDate"])
+        createdAt=created_at  # UTC
     )
 
     db.session.add(order)
     db.session.commit()
     return order
-
 
 def generate_invoice(client_id, start_date, end_date):
     orders = Order.query.filter(

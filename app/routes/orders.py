@@ -9,16 +9,28 @@ from sqlalchemy import desc
 orders_bp = Blueprint("orders", __name__, url_prefix="/api/v1/orders")
 
 
+from datetime import timezone, timedelta
+
+EAT = timezone(timedelta(hours=3))
+
+def to_eat(dt):
+    if not dt:
+        return None
+
+    # DB returned naive datetime → treat as UTC
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    return dt.astimezone(EAT).isoformat()
+
 def order_to_dict(order: Order):
     return {
         "id": order.id,
         "totalCost": order.totalCost,
         "pagesOrSlides": order.pagesOrSlides,
         "description": order.description,
-        "class": {"id": order.order_class.id, "name": order.order_class.name} if order.order_class else None,
-        "genre": {"id": order.order_genre.id, "name": order.order_genre.name} if order.order_genre else None,
         "week": order.week,
-        "createdAt": order.createdAt.isoformat() if order.createdAt else None,
+        "createdAt": to_eat(order.createdAt),
         "client": {
             "id": order.client.id,
             "clientName": order.client.clientName
@@ -58,16 +70,21 @@ def get_orders():
 
     # ---- Date filtering ----
     if start_date:
-        try:
-            query = query.filter(Order.createdAt >= datetime.fromisoformat(start_date.replace("Z", "")))
-        except ValueError:
-            pass
+        eat_start = datetime.fromisoformat(start_date)
+        if eat_start.tzinfo is None:
+            eat_start = eat_start.replace(tzinfo=EAT)
+        query = query.filter(
+            Order.createdAt >= eat_start.astimezone(timezone.utc)
+        )
 
     if end_date:
-        try:
-            query = query.filter(Order.createdAt <= datetime.fromisoformat(end_date.replace("Z", "")))
-        except ValueError:
-            pass
+        eat_end = datetime.fromisoformat(end_date)
+        if eat_end.tzinfo is None:
+            eat_end = eat_end.replace(tzinfo=EAT)
+        query = query.filter(
+            Order.createdAt <= eat_end.astimezone(timezone.utc)
+        )
+
 
     # ---- Client filtering ----
     if client_id:
@@ -151,6 +168,12 @@ def update_order(order_id):
         order.pagesOrSlides = data["pagesOrSlides"]
     if "description" in data:
         order.description = data["description"]
+    if "orderDate" in data:
+        eat_dt = datetime.fromisoformat(data["orderDate"])
+        if eat_dt.tzinfo is None:
+            eat_dt = eat_dt.replace(tzinfo=EAT)
+
+        order.createdAt = eat_dt.astimezone(timezone.utc)
 
     # Recalculate totalCost if product or pages changed
     if order.product:
