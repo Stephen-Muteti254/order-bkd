@@ -40,6 +40,14 @@ def order_to_dict(order: Order):
             "name": order.product.name,
             "pricePerUnit": order.product.pricePerUnit,
         } if order.product else None,
+        "class": {
+            "id": order.order_class.id,
+            "name": order.order_class.name,
+        } if order.order_class else None,
+        "genre": {
+            "id": order.order_genre.id,
+            "name": order.order_genre.name,
+        } if order.order_genre else None,
     }
 
 
