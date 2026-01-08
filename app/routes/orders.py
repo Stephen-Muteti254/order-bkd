@@ -70,6 +70,7 @@ def get_orders():
     search = request.args.get("search")
     client_id = request.args.get("clientId")
     product_id = request.args.get("productId")
+    class_id = request.args.get("classId")
     start_date = request.args.get("startDate")
     end_date = request.args.get("endDate")
     sort = request.args.get("sort", "-createdAt")
@@ -97,6 +98,10 @@ def get_orders():
     # ---- Client filtering ----
     if client_id:
         query = query.filter(Order.clientId == client_id)
+
+    if class_id:
+        query = query.filter(Order.classId == class_id)
+
 
     # ---- Product filtering ----
     if product_id:
@@ -168,10 +173,20 @@ def update_order(order_id):
         order.clientId = data["clientId"]
     if "productId" in data:
         order.productId = data["productId"]
-    if "classId" in data:  # now using foreign key
-        order.classId = data["classId"]
-    if "genreId" in data:  # now using foreign key
-        order.genreId = data["genreId"]
+    # ---- Class ----
+    if "orderClass" in data:
+        if isinstance(data["orderClass"], dict):
+            order.classId = data["orderClass"].get("id")
+        else:
+            order.classId = data["orderClass"]
+
+    # ---- Genre ----
+    if "genre" in data:
+        if isinstance(data["genre"], dict):
+            order.genreId = data["genre"].get("id")
+        else:
+            order.genreId = data["genre"]
+
     if "pagesOrSlides" in data:
         order.pagesOrSlides = data["pagesOrSlides"]
     if "description" in data:

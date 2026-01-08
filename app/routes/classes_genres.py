@@ -28,3 +28,34 @@ def add_genre():
     db.session.add(new_genre)
     db.session.commit()
     return jsonify({"id": new_genre.id, "name": new_genre.name}), 201
+
+classes_bp = Blueprint("classes", __name__, url_prefix="/api/v1/classes")
+
+
+@classes_bp.route("", methods=["GET"])
+def list_classes():
+    page = int(request.args.get("page", 1))
+    page_size = int(request.args.get("page_size", 10))
+    search = request.args.get("search")
+
+    query = Class.query
+
+    if search:
+        query = query.filter(Class.name.ilike(f"%{search}%"))
+
+    total = query.count()
+
+    classes = (
+        query
+        .order_by(Class.name.asc())
+        .offset((page - 1) * page_size)
+        .limit(page_size)
+        .all()
+    )
+
+    return jsonify({
+        "data": [{"id": c.id, "name": c.name} for c in classes],
+        "total": total,
+        "page": page,
+        "page_size": page_size
+    })
