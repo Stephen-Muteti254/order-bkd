@@ -48,7 +48,7 @@ def resolve_period(period: str):
         start = now_eat.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
         prev_start = (start - relativedelta(months=1)).replace(day=1)
-        prev_end = prev_start + (now_eat - start)
+        prev_end = start
 
         label = "This Month"
 
@@ -57,7 +57,7 @@ def resolve_period(period: str):
         start = now_eat.replace(month=month, day=1, hour=0, minute=0, second=0, microsecond=0)
 
         prev_start = start - relativedelta(months=3)
-        prev_end = prev_start + (now_eat - start)
+        prev_end = start
 
         label = "This Quarter"
 
@@ -65,7 +65,7 @@ def resolve_period(period: str):
         start = now_eat.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
 
         prev_start = start.replace(year=start.year - 1)
-        prev_end = prev_start + (now_eat - start)
+        prev_end = start
 
         label = "This Year"
 
