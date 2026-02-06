@@ -40,26 +40,37 @@ def resolve_period(period: str):
 
     if period == "week":
         start = now_eat - timedelta(days=7)
+        prev_start = start - timedelta(days=7)
+        prev_end = start
         label = "This Week"
 
     elif period == "month":
         start = now_eat.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        prev_start = (start - relativedelta(months=1)).replace(day=1)
+        prev_end = prev_start + (now_eat - start)
+
         label = "This Month"
 
     elif period == "quarter":
         month = ((now_eat.month - 1) // 3) * 3 + 1
         start = now_eat.replace(month=month, day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        prev_start = start - relativedelta(months=3)
+        prev_end = prev_start + (now_eat - start)
+
         label = "This Quarter"
 
     elif period == "year":
         start = now_eat.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        prev_start = start.replace(year=start.year - 1)
+        prev_end = prev_start + (now_eat - start)
+
         label = "This Year"
 
     else:
         raise ValueError("Invalid period")
-
-    prev_end = start
-    prev_start = start - (now_eat - start)
 
     return {
         "current": (eat_to_utc(start), eat_to_utc(now_eat)),
@@ -68,6 +79,7 @@ def resolve_period(period: str):
         "eat_current": (start, now_eat),
         "eat_previous": (prev_start, prev_end),
     }
+
 
 def resolve_trend_period(period: str, start_date=None, end_date=None):
     now_eat = eat_now()
