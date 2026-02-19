@@ -75,6 +75,14 @@ def get_orders():
     end_date = request.args.get("endDate")
     sort = request.args.get("sort", "-createdAt")
 
+    print("\n========== INCOMING REQUEST ==========")
+    print("Raw args:", dict(request.args))
+    print("Client ID:", client_id)
+    print("Class ID:", class_id)
+    print("Start Date:", start_date)
+    print("End Date:", end_date)
+    print("======================================\n")
+
     query = Order.query
 
     # ---- Date filtering ----
@@ -82,9 +90,12 @@ def get_orders():
         eat_start = datetime.fromisoformat(start_date)
         if eat_start.tzinfo is None:
             eat_start = eat_start.replace(tzinfo=EAT)
-        query = query.filter(
-            Order.createdAt >= eat_start.astimezone(timezone.utc)
-        )
+
+        utc_start = eat_start.astimezone(timezone.utc)
+
+        print("Converted START UTC:", utc_start)
+
+        query = query.filter(Order.createdAt >= utc_start)
 
     if end_date:
         eat_end = datetime.fromisoformat(end_date)
@@ -128,12 +139,23 @@ def get_orders():
         sort_col = getattr(Order, sort, Order.createdAt)
         query = query.order_by(sort_col)
 
+    print("\nGenerated SQL:")
+    print(str(query.statement.compile(compile_kwargs={'literal_binds': True})))
+    print("\n")
+
+    print("Matching rows BEFORE pagination:", query.count())
+
     # ---- Pagination ----
     pagination = query.paginate(
         page=page,
         per_page=page_size,
         error_out=False
     )
+
+    print("Items in current page:", len(pagination.items))
+    for o in pagination.items:
+        print("Order ID:", o.id)
+
 
     return jsonify({
         "data": [order_to_dict(o) for o in pagination.items],
