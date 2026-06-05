@@ -1,6 +1,6 @@
 class Config:
     SQLALCHEMY_DATABASE_URI = (
-        "cockroachdb+psycopg://buxton:fJst_9bynxV-dXql4WR1vQ1@"
+        "cockroachdb+psycopg://buxton:UeNJ_CgmYh9NhU4hRH9_dw@"
         "order-mgt-19894.j77.aws-ap-south-1.cockroachlabs.cloud:26257/"
         "order-mgt"
         "?sslmode=verify-full"
