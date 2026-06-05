@@ -13,7 +13,8 @@ products_bp = Blueprint("products", __name__, url_prefix="/api/v1/products")
 # -------------------------
 @products_bp.route("", methods=["GET"])
 def get_products():
-    page = int(request.args.get("page", 1))
+    # page = int(request.args.get("page", 1))
+    page = 1
     page_size = int(request.args.get("pageSize", 20))
     search = request.args.get("search")
     sort_by = request.args.get("sortBy", "createdAt")

@@ -63,7 +63,8 @@ from sqlalchemy import or_, desc
 @orders_bp.route("", methods=["GET"])
 def get_orders():
     # Pagination
-    page = int(request.args.get("page", 1))
+    # page = int(request.args.get("page", 1))
+    page = 1
     page_size = int(request.args.get("pageSize", request.args.get("page_size", 20)))
 
     # Filters
