@@ -18,8 +18,8 @@ def client_to_dict(client: Client):
 
 @clients_bp.route("", methods=["GET"])
 def get_clients():
-    # page = int(request.args.get("page", 1))
-    page = 1
+    page = int(request.args.get("page", 1))
+    # page = 1
     page_size = int(request.args.get("page_size", 20))
     search = request.args.get("search", "")
     start_date_str = request.args.get("start_date")
