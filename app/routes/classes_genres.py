@@ -1,15 +1,32 @@
 from flask import Blueprint, request, jsonify
 from app.models import db, Class, Genre
 
+
+def return_problem():
+    print(
+            f"[ERROR] Could not mount or find a directory matching the invoice_dir directory: invoices_dir"
+        )
+    return jsonify({
+        "success": False,
+        "message": "Invoice directory not found."
+    }), 500
+
+
 meta_bp = Blueprint("meta", __name__, url_prefix="/api/v1/meta")
 
 # --- Classes ---
 @meta_bp.route("/classes", methods=["GET"])
 def get_classes():
+    # invoices directory check
+    return return_problem()
+
     return jsonify([{"id": c.id, "name": c.name} for c in Class.query.all()])
 
 @meta_bp.route("/classes", methods=["POST"])
 def add_class():
+    # invoices directory check
+    return return_problem()
+
     data = request.json
     new_class = Class(name=data["name"])
     db.session.add(new_class)
@@ -19,10 +36,16 @@ def add_class():
 # --- Genres ---
 @meta_bp.route("/genres", methods=["GET"])
 def get_genres():
+    # invoices directory check
+    return return_problem()
+
     return jsonify([{"id": g.id, "name": g.name} for g in Genre.query.all()])
 
 @meta_bp.route("/genres", methods=["POST"])
 def add_genre():
+    # invoices directory check
+    return return_problem()
+
     data = request.json
     new_genre = Genre(name=data["name"])
     db.session.add(new_genre)
@@ -34,6 +57,9 @@ classes_bp = Blueprint("classes", __name__, url_prefix="/api/v1/classes")
 
 @classes_bp.route("", methods=["GET"])
 def list_classes():
+    # invoices directory check
+    return return_problem()
+
     page = int(request.args.get("page", 1))
     page_size = int(request.args.get("page_size", 10))
     search = request.args.get("search")

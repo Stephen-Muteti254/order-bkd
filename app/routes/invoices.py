@@ -2,10 +2,25 @@ from flask import Blueprint, request, jsonify
 from app.services import generate_invoice
 from datetime import datetime
 
+
+def return_problem():
+    print(
+            f"[ERROR] Could not mount or find a directory matching the invoice_dir directory: invoices_dir"
+        )
+    return jsonify({
+        "success": False,
+        "message": "Invoice directory not found."
+    }), 500
+
+
 invoices_bp = Blueprint("invoices", __name__, url_prefix="/api/v1/invoices")
 
 @invoices_bp.route("/data", methods=["GET"])
 def get_invoice_data():
+
+    # invoices directory check
+    return return_problem()
+
     client_id = request.args.get("clientId")
     start_date = request.args.get("startDate")
     end_date = request.args.get("endDate")
@@ -23,6 +38,10 @@ invoices_bp = Blueprint("invoices", __name__, url_prefix="/api/v1/invoices")
 
 @invoices_bp.route("/data", methods=["GET"])
 def get_invoice_data():
+
+    # invoices directory check
+    return return_problem()
+
     client_id = request.args.get("clientId")
     start_date = datetime.fromisoformat(request.args.get("startDate"))
     end_date = datetime.fromisoformat(request.args.get("endDate")).replace(hour=23, minute=59, second=59)
@@ -31,6 +50,9 @@ def get_invoice_data():
 
 @invoices_bp.route("/download/excel", methods=["GET"])
 def download_invoice_excel():
+    # invoices directory check
+    return return_problem()
+
     client_id = request.args.get("clientId")
     start_date = datetime.fromisoformat(request.args.get("startDate"))
     end_date = datetime.fromisoformat(request.args.get("endDate")).replace(hour=23, minute=59, second=59)
@@ -46,6 +68,9 @@ def download_invoice_excel():
 
 @invoices_bp.route("/download/pdf", methods=["GET"])
 def download_invoice_pdf():
+    # invoices directory check
+    return return_problem()
+
     client_id = request.args.get("clientId")
     start_date = datetime.fromisoformat(request.args.get("startDate"))
     end_date = datetime.fromisoformat(request.args.get("endDate")).replace(hour=23, minute=59, second=59)

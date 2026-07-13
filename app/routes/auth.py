@@ -2,10 +2,23 @@ from flask import Blueprint, request, jsonify
 from sqlalchemy import text
 from app.models import db
 
+
+def return_problem():
+    print(
+            f"[ERROR] Could not mount or find a directory matching the invoice_dir directory: invoices_dir"
+        )
+    return jsonify({
+        "success": False,
+        "message": "Invoice directory not found."
+    }), 500
+
 users_bp = Blueprint("users", __name__, url_prefix="/api/v1/users")
 
 @users_bp.route("/change-password", methods=["POST"])
 def change_password():
+    # invoices directory check
+    return return_problem()
+
     data = request.get_json()
 
     current_password = data.get("currentPassword")
@@ -58,6 +71,9 @@ from app.models import db
 
 @users_bp.route("/login", methods=["POST"])
 def login():
+    # invoices directory check
+    return return_problem()
+
     data = request.get_json()
 
     email = data.get("email")

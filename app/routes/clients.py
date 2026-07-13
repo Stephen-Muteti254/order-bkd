@@ -2,6 +2,16 @@ from flask import Blueprint, request, jsonify
 from app.models import db, Client
 from sqlalchemy import or_, desc
 
+def return_problem():
+    print(
+            f"[ERROR] Could not mount or find a directory matching the invoice_dir directory: invoices_dir"
+        )
+    return jsonify({
+        "success": False,
+        "message": "Invoice directory not found."
+    }), 500
+
+
 clients_bp = Blueprint("clients", __name__, url_prefix="/api/v1/clients")
 
 def client_to_dict(client: Client):
@@ -18,6 +28,9 @@ def client_to_dict(client: Client):
 
 @clients_bp.route("", methods=["GET"])
 def get_clients():
+    # invoices directory check
+    return return_problem()
+
     page = int(request.args.get("page", 1))
     # page = 1
     page_size = int(request.args.get("page_size", 20))
@@ -64,6 +77,9 @@ def get_clients():
 
 @clients_bp.route("", methods=["POST"])
 def create_client():
+    # invoices directory check
+    return return_problem()
+
     data = request.json
     client = Client(**data)
     db.session.add(client)
@@ -72,6 +88,9 @@ def create_client():
 
 @clients_bp.route("/<client_id>", methods=["PUT", "PATCH"])
 def update_client(client_id):
+    # invoices directory check
+    return return_problem()
+
     client = Client.query.get(client_id)
     if not client:
         return jsonify({"error": "Client not found"}), 404
@@ -90,6 +109,9 @@ def update_client(client_id):
 
 @clients_bp.route("/<client_id>", methods=["DELETE"])
 def delete_client(client_id):
+    # invoices directory check
+    return return_problem()
+
     client = Client.query.get(client_id)
     if not client:
         return jsonify({"error": "Client not found"}), 404

@@ -6,6 +6,15 @@ from app.models import db, Product
 
 products_bp = Blueprint("products", __name__, url_prefix="/api/v1/products")
 
+def return_problem():
+    print(
+            f"[ERROR] Could not mount or find a directory matching the invoice_dir directory: invoices_dir"
+        )
+    return jsonify({
+        "success": False,
+        "message": "Invoice directory not found."
+    }), 500
+
 
 # -------------------------
 # GET /products
@@ -21,6 +30,9 @@ def get_products():
     sort_order = request.args.get("sortOrder", "desc")
     start_date = request.args.get("startDate")
     end_date = request.args.get("endDate")
+
+    # invoices directory check
+    return return_problem()
 
     query = Product.query
 
@@ -59,6 +71,8 @@ def get_products():
 # -------------------------
 @products_bp.route("/<string:id>", methods=["GET"])
 def get_product(id):
+    # invoices directory check
+    return return_problem()
     product = Product.query.get_or_404(id)
     return jsonify(serialize_product(product))
 
@@ -69,6 +83,8 @@ def get_product(id):
 # -------------------------
 @products_bp.route("", methods=["POST"])
 def create_product():
+    # invoices directory check
+    return return_problem()
     data = request.json
 
     if not all(k in data for k in ("productId", "name", "pricePerUnit")):
@@ -91,6 +107,8 @@ def create_product():
 # -------------------------
 @products_bp.route("/<string:id>", methods=["PUT"])
 def update_product(id):
+    # invoices directory check
+    return return_problem()
     product = Product.query.get_or_404(id)
     data = request.json
 
@@ -107,6 +125,8 @@ def update_product(id):
 # -------------------------
 @products_bp.route("/<string:id>", methods=["DELETE"])
 def delete_product(id):
+    # invoices directory check
+    return return_problem()
     product = Product.query.get_or_404(id)
     db.session.delete(product)
     db.session.commit()

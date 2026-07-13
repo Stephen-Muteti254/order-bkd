@@ -122,12 +122,26 @@ def percentage(current, previous):
         return 100.0 if current > 0 else 0.0
     return round(((current - previous) / previous) * 100, 2)
 
+
+def return_problem():
+    print(
+            f"[ERROR] Could not mount or find a directory matching the invoice_dir directory: invoices_dir"
+        )
+    return jsonify({
+        "success": False,
+        "message": "Invoice directory not found."
+    }), 500
+
+
 # -------------------------
 # Endpoints
 # -------------------------
 
 @analytics_bp.get("/earnings/comparison")
 def earnings_comparison():
+    # invoices directory check
+    return return_problem()
+
     period = request.args.get("period", "month")
     ranges = resolve_period(period)
 
@@ -169,6 +183,9 @@ def earnings_comparison():
 
 @analytics_bp.get("/revenue/trend")
 def revenue_trend():
+    # invoices directory check
+    return return_problem()
+
     period = request.args.get("period", "1month")
 
     start_utc, end_utc, start_eat, end_eat = resolve_trend_period(
@@ -210,6 +227,9 @@ def revenue_trend():
 
 @analytics_bp.get("/orders/trend")
 def orders_trend():
+    # invoices directory check
+    return return_problem()
+
     period = request.args.get("period", "1month")
 
     start_utc, end_utc, start_eat, end_eat = resolve_trend_period(
@@ -249,6 +269,9 @@ def orders_trend():
 
 @analytics_bp.get("/clients/earnings")
 def client_rankings():
+    # invoices directory check
+    return return_problem()
+
     period = request.args.get("period", "1month")
     start_utc, end_utc, start_eat, end_eat = resolve_trend_period(
         period,
