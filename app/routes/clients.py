@@ -29,7 +29,7 @@ def client_to_dict(client: Client):
 @clients_bp.route("", methods=["GET"])
 def get_clients():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     page = int(request.args.get("page", 1))
     # page = 1
@@ -78,7 +78,7 @@ def get_clients():
 @clients_bp.route("", methods=["POST"])
 def create_client():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     data = request.json
     client = Client(**data)
@@ -89,7 +89,7 @@ def create_client():
 @clients_bp.route("/<client_id>", methods=["PUT", "PATCH"])
 def update_client(client_id):
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     client = Client.query.get(client_id)
     if not client:
@@ -110,7 +110,7 @@ def update_client(client_id):
 @clients_bp.route("/<client_id>", methods=["DELETE"])
 def delete_client(client_id):
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     client = Client.query.get(client_id)
     if not client:

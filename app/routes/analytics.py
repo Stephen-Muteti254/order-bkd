@@ -140,7 +140,7 @@ def return_problem():
 @analytics_bp.get("/earnings/comparison")
 def earnings_comparison():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     period = request.args.get("period", "month")
     ranges = resolve_period(period)
@@ -184,7 +184,7 @@ def earnings_comparison():
 @analytics_bp.get("/revenue/trend")
 def revenue_trend():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     period = request.args.get("period", "1month")
 
@@ -228,7 +228,7 @@ def revenue_trend():
 @analytics_bp.get("/orders/trend")
 def orders_trend():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     period = request.args.get("period", "1month")
 
@@ -270,7 +270,7 @@ def orders_trend():
 @analytics_bp.get("/clients/earnings")
 def client_rankings():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     period = request.args.get("period", "1month")
     start_utc, end_utc, start_eat, end_eat = resolve_trend_period(

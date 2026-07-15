@@ -64,7 +64,7 @@ def return_problem():
 @orders_bp.route("", methods=["POST"])
 def add_order():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
     data = request.json
     order = create_order(data)
     return jsonify(order_to_dict(order)), 201
@@ -76,7 +76,7 @@ from sqlalchemy import or_, desc
 def get_orders():
 
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     # Pagination
     page = int(request.args.get("page", 1))
@@ -186,7 +186,7 @@ def get_orders():
 @orders_bp.route("/summary", methods=["GET"])
 def orders_summary():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     total_orders = Order.query.count()
     total_revenue = db.session.query(db.func.sum(Order.totalCost)).scalar() or 0
@@ -203,7 +203,7 @@ def update_order(order_id):
     week, clientId, productId, classId, genreId, pagesOrSlides, description
     """
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     order = Order.query.get(order_id)
     if not order:
@@ -257,7 +257,7 @@ def delete_order(order_id):
     Delete an order by its ID
     """
     # invoices directory check
-    return return_problem()
+    # return return_problem()
     
     order = Order.query.get(order_id)
     if not order:

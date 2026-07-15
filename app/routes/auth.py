@@ -17,7 +17,7 @@ users_bp = Blueprint("users", __name__, url_prefix="/api/v1/users")
 @users_bp.route("/change-password", methods=["POST"])
 def change_password():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     data = request.get_json()
 
@@ -72,7 +72,7 @@ from app.models import db
 @users_bp.route("/login", methods=["POST"])
 def login():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     data = request.get_json()
 

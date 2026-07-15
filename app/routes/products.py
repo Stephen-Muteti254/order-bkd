@@ -32,7 +32,7 @@ def get_products():
     end_date = request.args.get("endDate")
 
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     query = Product.query
 
@@ -72,7 +72,7 @@ def get_products():
 @products_bp.route("/<string:id>", methods=["GET"])
 def get_product(id):
     # invoices directory check
-    return return_problem()
+    # return return_problem()
     product = Product.query.get_or_404(id)
     return jsonify(serialize_product(product))
 
@@ -84,7 +84,7 @@ def get_product(id):
 @products_bp.route("", methods=["POST"])
 def create_product():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
     data = request.json
 
     if not all(k in data for k in ("productId", "name", "pricePerUnit")):
@@ -108,7 +108,7 @@ def create_product():
 @products_bp.route("/<string:id>", methods=["PUT"])
 def update_product(id):
     # invoices directory check
-    return return_problem()
+    # return return_problem()
     product = Product.query.get_or_404(id)
     data = request.json
 
@@ -126,7 +126,7 @@ def update_product(id):
 @products_bp.route("/<string:id>", methods=["DELETE"])
 def delete_product(id):
     # invoices directory check
-    return return_problem()
+    # return return_problem()
     product = Product.query.get_or_404(id)
     db.session.delete(product)
     db.session.commit()

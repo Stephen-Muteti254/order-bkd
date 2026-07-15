@@ -18,14 +18,14 @@ meta_bp = Blueprint("meta", __name__, url_prefix="/api/v1/meta")
 @meta_bp.route("/classes", methods=["GET"])
 def get_classes():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     return jsonify([{"id": c.id, "name": c.name} for c in Class.query.all()])
 
 @meta_bp.route("/classes", methods=["POST"])
 def add_class():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     data = request.json
     new_class = Class(name=data["name"])
@@ -37,14 +37,14 @@ def add_class():
 @meta_bp.route("/genres", methods=["GET"])
 def get_genres():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     return jsonify([{"id": g.id, "name": g.name} for g in Genre.query.all()])
 
 @meta_bp.route("/genres", methods=["POST"])
 def add_genre():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     data = request.json
     new_genre = Genre(name=data["name"])
@@ -58,7 +58,7 @@ classes_bp = Blueprint("classes", __name__, url_prefix="/api/v1/classes")
 @classes_bp.route("", methods=["GET"])
 def list_classes():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     page = int(request.args.get("page", 1))
     page_size = int(request.args.get("page_size", 10))

@@ -19,7 +19,7 @@ invoices_bp = Blueprint("invoices", __name__, url_prefix="/api/v1/invoices")
 def get_invoice_data():
 
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     client_id = request.args.get("clientId")
     start_date = request.args.get("startDate")
@@ -40,7 +40,7 @@ invoices_bp = Blueprint("invoices", __name__, url_prefix="/api/v1/invoices")
 def get_invoice_data():
 
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     client_id = request.args.get("clientId")
     start_date = datetime.fromisoformat(request.args.get("startDate"))
@@ -51,7 +51,7 @@ def get_invoice_data():
 @invoices_bp.route("/download/excel", methods=["GET"])
 def download_invoice_excel():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     client_id = request.args.get("clientId")
     start_date = datetime.fromisoformat(request.args.get("startDate"))
@@ -69,7 +69,7 @@ def download_invoice_excel():
 @invoices_bp.route("/download/pdf", methods=["GET"])
 def download_invoice_pdf():
     # invoices directory check
-    return return_problem()
+    # return return_problem()
 
     client_id = request.args.get("clientId")
     start_date = datetime.fromisoformat(request.args.get("startDate"))
